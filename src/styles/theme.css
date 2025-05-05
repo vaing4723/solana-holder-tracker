@@ -1,0 +1,90 @@
+body[data-theme='dark'] {
+  --bg: #181a20;
+  --text: #d1d4dc;
+  --card: #23262f;
+  --border: #222;
+}
+body[data-theme='light'] {
+  --bg: #fff;
+  --text: #222;
+  --card: #f5f5f5;
+  --border: #eee;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  height: 56px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+}
+.navbar-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-right: 16px;
+}
+.pool-selector {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+.theme-toggle {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  background: var(--bg);
+}
+.footer {
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  padding: 0 24px 24px 24px;
+}
+.trade-list {
+  margin-top: 16px;
+  background: var(--card);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 0.95rem;
+}
+.trade-list-header, .trade-list-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+.trade-list-header {
+  font-weight: bold;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.trade-list-row {
+  border-bottom: 1px solid var(--border);
+}
+.trade-list-empty {
+  text-align: center;
+  color: #888;
+  padding: 12px 0;
+} 

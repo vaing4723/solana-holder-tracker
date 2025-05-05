@@ -1,0 +1,358 @@
+:root {
+  /* 浅色主题变量 */
+  --color-background: #ffffff;
+  --color-text: #333333;
+  --color-primary: #1e88e5;
+  --color-secondary: #757575;
+  --color-border: #333333;
+  --color-card-bg: #f5f5f5;
+  --color-success: #4caf50;
+  --color-danger: #f44336;
+  --color-chart-grid: #e0e0e0;
+  --color-chart-text: #757575;
+}
+
+[data-theme='dark'] {
+  /* 深色主题变量 */
+  --color-background: #121212;
+  --color-text: #e0e0e0;
+  --color-primary: #90caf9;
+  --color-secondary: #9e9e9e;
+  --color-border: #333333;
+  --color-card-bg: #1e1e1e;
+  --color-success: #81c784;
+  --color-danger: #e57373;
+  --color-chart-grid: #333333;
+  --color-chart-text: #9e9e9e;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+/* GMGN布局结构 */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  height: 60px; /* 对应header.flex.bg-bg-100.h-[60px] */
+  background-color: var(--color-card-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.content-wrapper {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  height: 100%;
+}
+
+/* 左侧代币列表 */
+.left-sidebar {
+  width: 300px;
+  height: 100%;
+  background-color: var(--color-card-bg);
+  border-right: 1px solid var(--color-border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 主要内容区域 */
+.main-panel {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-width: 0; /* 防止flex子项溢出 */
+}
+
+/* 右侧交易区域 */
+.right-sidebar {
+  width: 300px;
+  height: 100%;
+  background-color: var(--color-card-bg);
+  border-left: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+/* 图表与交易记录区 */
+.chart-area {
+  height: 60%;
+  min-height: 600px;
+  position: relative;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
+/* 时间选择器工具栏 */
+.chart-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  background-color: var(--color-card-bg);
+  border-bottom: 1px solid var(--color-border);
+  height: 35px;
+  min-height: 35px;
+}
+
+.chart-container-wrapper {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* 防止flex子项溢出 */
+}
+
+.chart-container {
+  width: 100%;
+  flex: 1;
+  position: relative;
+  height: auto;
+  min-height: 0; /* 防止flex子项溢出 */
+}
+
+/* 交易明细区域 */
+.trade-list-area {
+  height: 40%;
+  background-color: var(--color-card-bg);
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.trade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  height: 35px;
+  min-height: 35px;
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-card-bg);
+}
+
+/* 时间选择器 */
+.time-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.time-selector button {
+  background: transparent;
+  border: none;
+  padding: 2px 8px;
+  color: var(--color-secondary);
+  font-size: 0.8rem;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.time-selector button.active {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* 代币列表项 */
+.token-list-header {
+  padding: 8px 10px;
+  font-size: 0.75rem;
+  color: var(--color-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.token-list-item {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: minmax(40px, 1fr) minmax(40px, 1fr) minmax(40px, 1fr);
+  gap: 8px;
+  font-size: 0.8rem;
+  align-items: center;
+}
+
+.token-list-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+}
+
+[data-theme='dark'] .token-list-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* 交易表格 */
+.trade-table-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.trade-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.trade-table th {
+  position: sticky;
+  top: 0;
+  background-color: var(--color-card-bg);
+  z-index: 1;
+  font-weight: normal;
+  font-size: 0.75rem;
+  color: var(--color-secondary);
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.trade-table td {
+  padding: 6px 10px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.75rem;
+}
+
+/* 空卡片样式 */
+.empty-card {
+  padding: 20px;
+  color: var(--color-secondary);
+  text-align: center;
+  font-size: 0.9rem;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--color-border);
+}
+
+[data-theme='dark'] .empty-card {
+  color: #aaa;
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* 图表控件 */
+.chart-controls {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 8px;
+  z-index: 5;
+}
+
+.chart-control-button {
+  width: 24px;
+  height: 24px;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+[data-theme='dark'] .chart-control-button {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  font-size: 1.2rem;
+  color: var(--color-primary);
+}
+
+.chart-loading, .chart-error {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--color-text);
+  font-size: 1.2rem;
+  z-index: 10;
+}
+
+.chart-error {
+  color: var(--color-danger);
+}
+
+/* 媒体查询以确保在小屏幕上的响应式布局 */
+@media (max-width: 1200px) {
+  .left-sidebar {
+    width: 180px;
+  }
+  
+  .right-sidebar {
+    width: 280px;
+  }
+}
+
+@media (max-width: 992px) {
+  .left-sidebar {
+    width: 150px;
+  }
+  
+  .right-sidebar {
+    width: 250px;
+  }
+}
+
+/* 移动设备上的布局 */
+@media (max-width: 768px) {
+  .content-wrapper {
+    flex-direction: column;
+  }
+  
+  .left-sidebar {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
+  
+  .right-sidebar {
+    width: 100%;
+    height: auto;
+  }
+  
+  .main-panel {
+    height: auto;
+  }
+} 
