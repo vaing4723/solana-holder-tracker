@@ -104,6 +104,9 @@ const KLineChart = ({ contractAddress, timeframes, selectedTimeframe, setSelecte
       setLastHolderCount(0);
       setUpdatingCount(0);
       
+      // 重要：重置isFetching状态，避免新合约请求被阻塞
+      setIsFetching(false);
+      
       // 重置时间戳
       lastTimeRef.current = 0;
       
@@ -339,6 +342,7 @@ const KLineChart = ({ contractAddress, timeframes, selectedTimeframe, setSelecte
       // 验证当前请求是否仍然有效
       if (currentRequestId !== requestIdRef.current || currentContractRef.current !== contractAddress) {
         console.log(`请求已过期，当前合约已变更。请求ID: ${currentRequestId}, 当前有效ID: ${requestIdRef.current}`);
+        console.log(`旧合约: ${currentContractRef.current}, 新合约: ${contractAddress}`);
         // 不抛出异常，而是直接返回空数组
         return [];
       }
@@ -441,7 +445,15 @@ const KLineChart = ({ contractAddress, timeframes, selectedTimeframe, setSelecte
     // 如果已经在获取数据中，跳过这次请求
     if (isFetching) {
       console.log('上一次请求尚未完成，跳过本次更新');
-      return;
+      
+      // 检查isFetching状态是否存在时间过长（超过10秒），如果是则强制重置
+      if (lastFetchTime && (Date.now() - lastFetchTime.getTime() > 10000)) {
+        console.log('检测到请求时间过长(>10秒)，强制重置isFetching状态');
+        setIsFetching(false);
+        // 继续执行当前请求
+      } else {
+        return;
+      }
     }
     
     // 确保是当前合约
@@ -554,10 +566,11 @@ const KLineChart = ({ contractAddress, timeframes, selectedTimeframe, setSelecte
         }
       }
     } finally {
-      // 只有当请求ID仍然有效时才重置fetching状态
+      // 无论请求ID是否仍然有效，都重置fetching状态以避免死锁
+      setIsFetching(false);
+      
+      // 只有当请求ID仍然有效时才设置新的定时器
       if (currentRequestId === requestIdRef.current) {
-        setIsFetching(false);
-        
         // 在设置新定时器前清除可能存在的定时器
         if (timerRef.current) {
           console.log('清除已存在的定时器，准备设置新定时器');
@@ -569,6 +582,8 @@ const KLineChart = ({ contractAddress, timeframes, selectedTimeframe, setSelecte
         const currentInterval = getRefreshIntervalFromTimeframe(selectedTimeframe);
         console.log(`安排下一次请求，间隔: ${currentInterval}ms，当前时间框架: ${selectedTimeframe}`);
         timerRef.current = setTimeout(fetchHoldersCount, currentInterval);
+      } else {
+        console.log('请求ID已过期，不设置新的定时器');
       }
     }
   };
